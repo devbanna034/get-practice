@@ -2,4 +2,5 @@ Day 1 -git learning notes
 
 1. Git is a version control system.
 2. Git helps treak changes in files.
-GitHub hosts respositories online.
+3. GitHub hosts respositories online.
+4. git helps developers collaborate on projects.
