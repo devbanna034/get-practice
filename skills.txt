@@ -1,0 +1,14 @@
+My Technical Skills
+
+1. Python Programming
+2. HTML and CSS
+3. Basic Git and GitHub
+4. Problem Solving
+5. Web Development Fundamentals
+
+My Learning Goals
+
+1. Improve Python programming skills.
+2. Learn backend web development.
+3. Understand collaborative software development.
+4. currently learning git hub pull requests and collabration.
