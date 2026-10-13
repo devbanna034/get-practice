@@ -30,4 +30,5 @@ my goal is tu understand version control and improve my software development ski
 2. check changes using git status and git diff.
 3. stage the required changes using git add.
 4. review staged changes using git duff --cached.
-5. save the changes using git commit.
+5. save the changes using git commit.# get-practice
+my git and github practice project
