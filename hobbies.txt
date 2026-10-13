@@ -1,0 +1,8 @@
+my hobbies
+
+1. learning pythone programming.
+2. exploring web development.
+3. solving coding problems.
+4. learning new technologies
+5. building small software projects.
+
