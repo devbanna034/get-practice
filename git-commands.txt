@@ -1,0 +1,9 @@
+Git command refrence
+
+git init - initialize a git repository.
+git status - check the current repository state.
+git add - stage changes.
+git diff - review unstaged changes.
+git diff --cached - review stages changes.
+git commit - save the snapshot of stagrd changes.
+git log --oneline - view a compact commit history.
