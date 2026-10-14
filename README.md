@@ -32,5 +32,8 @@ my goal is tu understand version control and improve my software development ski
 4. review staged changes using git duff --cached.
 5. save the changes using git commit.# get-practice
 my git and github practice project
-Conflict Practice: I am learning version control.
-my goal is to become a skilled pythone web developer
+my git and github practice project
+
+My goal is to become a skilled Python web developer.
+
+I am learning Git branching, merging, and conflict resolution.
