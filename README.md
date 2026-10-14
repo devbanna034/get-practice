@@ -33,3 +33,4 @@ my goal is tu understand version control and improve my software development ski
 5. save the changes using git commit.# get-practice
 my git and github practice project
 Conflict Practice: I am learning Git.
+my goal is to become a skilled pythone web developer
