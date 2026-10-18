@@ -6,4 +6,8 @@ Day 1 -git learning notes
 4. The stanging area helps select changes for the next commit.
 5. A commit record a snapshot of staged changes.
 6. 6. Git clone creates a local copy of a remote repository.
-7. Git pull fetches and integrates changes from a remote branch.
+7. Git pull fetches and integrates changes from a remote branch
+8. Git branch creates a separate line of development.
+9. Git merge combines changes from different branches.
+10. Pull requests help review code before merging.
+11. Git push uploads local commits to GitHub.
