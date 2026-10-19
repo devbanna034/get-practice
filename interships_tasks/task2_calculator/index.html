@@ -3,114 +3,243 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simple Calculator</title>
+  <title>Calculator App</title>
+
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: Arial, sans-serif;
-      background: #eef2ff;
-      display: grid;
-      place-items: center;
+      background: #eef2f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       min-height: 100vh;
       margin: 0;
     }
 
     .calculator {
-      width: 280px;
+      width: 320px;
+      max-width: 95vw;
       background: white;
-      padding: 22px;
+      padding: 20px;
       border-radius: 16px;
-      box-shadow: 0 4px 18px #0002;
+      box-shadow: 0 8px 25px #0002;
     }
 
-    h1 { text-align: center; font-size: 25px; }
+    h2 {
+      text-align: center;
+      margin-top: 0;
+    }
 
-    input, select, button {
-      box-sizing: border-box;
+    #display {
       width: 100%;
-      padding: 12px;
-      margin: 7px 0;
-      font-size: 16px;
+      height: 65px;
+      font-size: 26px;
+      text-align: right;
+      padding: 10px;
+      margin-bottom: 12px;
+      border: 1px solid #ccc;
       border-radius: 8px;
     }
 
-    input, select { border: 1px solid #aaa; }
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
 
     button {
-      background: #4f46e5;
-      color: white;
+      padding: 16px 5px;
+      font-size: 20px;
       border: none;
+      border-radius: 8px;
+      background: #e8edf5;
       cursor: pointer;
     }
 
-    #result { text-align: center; overflow-wrap: anywhere; }
+    button:hover {
+      background: #d5deed;
+    }
+
+    .operator {
+      background: #cfe0ff;
+    }
+
+    .clear {
+      background: #ffb8b8;
+    }
+
+    .equal {
+      background: #9be5b0;
+    }
+
+    #message {
+      min-height: 20px;
+      color: #c62828;
+      font-size: 14px;
+      text-align: center;
+    }
   </style>
 </head>
+
 <body>
-  <div class="calculator">
-    <h1>Calculator</h1>
+  <main class="calculator">
+    <h2>Calculator</h2>
 
-    <input type="number" id="num1" placeholder="First number"
-      step="any">
+    <input
+      id="display"
+      type="text"
+      value="0"
+      readonly
+      aria-label="Calculator display"
+    >
 
-    <select id="operator" aria-label="Operation">
-      <option value="+">Addition (+)</option>
-      <option value="-">Subtraction (-)</option>
-      <option value="*">Multiplication (×)</option>
-      <option value="/">Division (÷)</option>
-    </select>
+    <div class="buttons">
+      <button class="clear" onclick="clearAll()">C</button>
+      <button onclick="backspace()">⌫</button>
+      <button class="operator" onclick="chooseOperator('/')">÷</button>
+      <button class="operator" onclick="chooseOperator('*')">×</button>
 
-    <input type="number" id="num2" placeholder="Second number"
-      step="any">
+      <button onclick="digit('7')">7</button>
+      <button onclick="digit('8')">8</button>
+      <button onclick="digit('9')">9</button>
+      <button class="operator" onclick="chooseOperator('-')">−</button>
 
-    <button id="calculate">Calculate</button>
-    <button id="clear">Clear</button>
+      <button onclick="digit('4')">4</button>
+      <button onclick="digit('5')">5</button>
+      <button onclick="digit('6')">6</button>
+      <button class="operator" onclick="chooseOperator('+')">+</button>
 
-    <h3 id="result" aria-live="polite">Result: —</h3>
-  </div>
+      <button onclick="digit('1')">1</button>
+      <button onclick="digit('2')">2</button>
+      <button onclick="digit('3')">3</button>
+      <button class="equal" onclick="calculate()">=</button>
+
+      <button onclick="digit('0')">0</button>
+      <button onclick="decimal()">.</button>
+    </div>
+
+    <p id="message" role="status"></p>
+  </main>
 
   <script>
-    const num1 = document.getElementById("num1");
-    const num2 = document.getElementById("num2");
-    const operator = document.getElementById("operator");
-    const result = document.getElementById("result");
+    const display = document.getElementById("display");
+    const message = document.getElementById("message");
 
-    document.getElementById("calculate").addEventListener("click", () => {
-      if (num1.value.trim() === "" || num2.value.trim() === "") {
-        result.textContent = "Please enter both numbers.";
+    let firstNumber = null;
+    let operator = null;
+    let waitingForNumber = false;
+
+    function digit(number) {
+      message.textContent = "";
+
+      if (waitingForNumber || display.value === "0") {
+        display.value = number;
+        waitingForNumber = false;
+      } else if (display.value.length < 15) {
+        display.value += number;
+      }
+    }
+
+    function decimal() {
+      if (waitingForNumber) {
+        display.value = "0.";
+        waitingForNumber = false;
+      } else if (!display.value.includes(".")) {
+        display.value += ".";
+      }
+    }
+
+    function chooseOperator(op) {
+      message.textContent = "";
+
+      if (operator && !waitingForNumber) {
+        calculate();
+        if (operator === null) return;
+      }
+
+      firstNumber = Number(display.value);
+      operator = op;
+      waitingForNumber = true;
+    }
+
+    function calculate() {
+      if (operator === null || waitingForNumber) {
+        message.textContent = "Enter a second number.";
         return;
       }
 
-      const a = Number(num1.value);
-      const b = Number(num2.value);
+      const secondNumber = Number(display.value);
       let answer;
 
-      switch (operator.value) {
+      switch (operator) {
         case "+":
-          answer = a + b;
+          answer = firstNumber + secondNumber;
           break;
         case "-":
-          answer = a - b;
+          answer = firstNumber - secondNumber;
           break;
         case "*":
-          answer = a * b;
+          answer = firstNumber * secondNumber;
           break;
         case "/":
-          if (b === 0) {
-            result.textContent = "Cannot divide by zero.";
+          if (secondNumber === 0) {
+            message.textContent = "Cannot divide by zero!";
             return;
           }
-          answer = a / b;
+          answer = firstNumber / secondNumber;
           break;
       }
 
-      result.textContent = "Result: " + answer;
-    });
+      if (!Number.isFinite(answer)) {
+        message.textContent = "Invalid calculation.";
+        return;
+      }
 
-    document.getElementById("clear").addEventListener("click", () => {
-      num1.value = "";
-      num2.value = "";
-      operator.value = "+";
-      result.textContent = "Result: —";
+      display.value = String(
+        Number(answer.toPrecision(12))
+      );
+
+      firstNumber = null;
+      operator = null;
+      waitingForNumber = true;
+      message.textContent = "";
+    }
+
+    function clearAll() {
+      display.value = "0";
+      firstNumber = null;
+      operator = null;
+      waitingForNumber = false;
+      message.textContent = "";
+    }
+
+    function backspace() {
+      if (waitingForNumber) return;
+
+      display.value =
+        display.value.length > 1
+          ? display.value.slice(0, -1)
+          : "0";
+
+      message.textContent = "";
+    }
+
+    document.addEventListener("keydown", (event) => {
+      if (/^[0-9]$/.test(event.key)) digit(event.key);
+      else if (event.key === ".") decimal();
+      else if (["+", "-", "*", "/"].includes(event.key)) {
+        chooseOperator(event.key);
+      } else if (event.key === "Enter" || event.key === "=") {
+        calculate();
+      } else if (event.key === "Escape") {
+        clearAll();
+      } else if (event.key === "Backspace") {
+        backspace();
+      }
     });
   </script>
 </body>
